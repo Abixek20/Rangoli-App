@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rangoli Pattern AI — Generate & Analyze Traditional Patterns</title>
+    <meta name="description"
+        content="An AI-powered tool to generate, analyze, and recreate traditional Indian Rangoli patterns using geometric symmetry, graph theory, and machine learning.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- Animated Background -->
+    <div class="bg-pattern">
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-orb bg-orb-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="main-nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo" onclick="showSection('hero')">
+                <div class="nav-logo-icon">🌸</div>
+                <span class="nav-logo-text">Rangoli AI</span>
+            </a>
+            <div class="nav-links" id="nav-links">
+                <button class="nav-link active" id="nav-generate" onclick="showSection('generate')">✨ Generate</button>
+                <button class="nav-link" id="nav-analyze" onclick="showSection('analyze')">🔍 Analyze</button>
+                <button class="nav-link" id="nav-about" onclick="showSection('about')">📖 About</button>
+            </div>
+            <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="mobile-menu" id="mobile-menu">
+            <button onclick="showSection('generate'); toggleMobileMenu()">✨ Generate</button>
+            <button onclick="showSection('analyze'); toggleMobileMenu()">🔍 Analyze</button>
+            <button onclick="showSection('about'); toggleMobileMenu()">📖 About</button>
+        </div>
+    </nav>
+
+    <!-- ═══════ HERO SECTION ═══════ -->
+    <section id="hero-section" class="section active" style="display:flex; flex-direction:column;">
+        <div class="hero">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="dot"></span>
+                    AI-Powered Rangoli Pattern Engine
+                </div>
+                <h1>
+                    Create Stunning<br>
+                    <span class="gradient-text">Rangoli Patterns</span><br>
+                    with AI
+                </h1>
+                <p>
+                    Generate, analyze, and recreate traditional Indian Rangoli patterns powered by geometric symmetry
+                    algorithms, graph theory, and machine learning.
+                </p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary" onclick="showSection('generate')">
+                        ✨ Generate Pattern
+                    </button>
+                    <button class="btn btn-secondary" onclick="showSection('analyze')">
+                        🔍 Analyze Image
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature Cards -->
+        <div class="container" style="padding-bottom: 80px;">
+            <div class="info-grid reveal" id="hero-cards">
+                <div class="info-card">
+                    <div class="info-card-icon">🎨</div>
+                    <h3>5 Pattern Styles</h3>
+                    <p>Generate Mandala, Kolam, Floral, Geometric, and Peacock-inspired Rangolis with customizable
+                        symmetry and layers.</p>
+                    <div class="tags">
+                        <span class="tag">Mandala</span>
+                        <span class="tag">Kolam</span>
+                        <span class="tag">Floral</span>
+                        <span class="tag">Geometric</span>
+                        <span class="tag">Peacock</span>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">🔬</div>
+                    <h3>Deep Image Analysis</h3>
+                    <p>Upload any Rangoli image to extract its symmetry order, dominant color palette, edge density, and
+                        shape composition.</p>
+                    <div class="tags">
+                        <span class="tag">OpenCV</span>
+                        <span class="tag">K-Means</span>
+                        <span class="tag">Edge Detection</span>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">🕸️</div>
+                    <h3>Graph Representation</h3>
+                    <p>Every pattern is modeled as a mathematical graph with Delaunay triangulation to capture
+                        structural and topological properties.</p>
+                    <div class="tags">
+                        <span class="tag">NetworkX</span>
+                        <span class="tag">Delaunay</span>
+                        <span class="tag">Graph Theory</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ GENERATE SECTION ═══════ -->
+    <section id="generate-section" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>✨ Pattern <span class="gradient-text">Generator</span></h2>
+                <p>Configure your Rangoli style and let the AI create a unique pattern for you.</p>
+            </div>
+
+            <div class="generator-layout">
+                <!-- Controls Panel -->
+                <aside class="controls-panel">
+                    <div class="controls-title">⚙️ Configuration</div>
+
+                    <!-- Style Selector -->
+                    <div class="control-group">
+                        <span class="control-label">Pattern Style</span>
+                        <div class="style-grid" id="style-grid">
+                            <div class="style-option active" data-style="mandala" onclick="selectStyle(this)">
+                                <span class="style-icon">🔵</span>Mandala
+                            </div>
+                            <div class="style-option" data-style="kolam" onclick="selectStyle(this)">
+                                <span class="style-icon">⭕</span>Kolam
+                            </div>
+                            <div class="style-option" data-style="floral" onclick="selectStyle(this)">
+                                <span class="style-icon">🌸</span>Floral
+                            </div>
+                            <div class="style-option" data-style="geometric" onclick="selectStyle(this)">
+                                <span class="style-icon">⭐</span>Geometric
+                            </div>
+                            <div class="style-option" data-style="peacock" onclick="selectStyle(this)">
+                                <span class="style-icon">🦚</span>Peacock
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Color Scheme -->
+                    <div class="control-group">
+                        <span class="control-label">Color Scheme</span>
+                        <div class="color-schemes" id="color-schemes">
+                            <button class="color-scheme-btn active" data-scheme="traditional"
+                                onclick="selectScheme(this)">
+                                <div class="color-dots">
+                                    <span class="color-dot" style="background:#FF6B35"></span>
+                                    <span class="color-dot" style="background:#F7C948"></span>
+                                    <span class="color-dot" style="background:#E63946"></span>
+                                    <span class="color-dot" style="background:#2D6A4F"></span>
+                                </div>
+                                Traditional
+                            </button>
+                            <button class="color-scheme-btn" data-scheme="modern" onclick="selectScheme(this)">
+                                <div class="color-dots">
+                                    <span class="color-dot" style="background:#667EEA"></span>
+                                    <span class="color-dot" style="background:#764BA2"></span>
+                                    <span class="color-dot" style="background:#F093FB"></span>
+                                    <span class="color-dot" style="background:#4FACFE"></span>
+                                </div>
+                                Modern
+                            </button>
+                            <button class="color-scheme-btn" data-scheme="earthy" onclick="selectScheme(this)">
+                                <div class="color-dots">
+                                    <span class="color-dot" style="background:#8D6E63"></span>
+                                    <span class="color-dot" style="background:#D4A76A"></span>
+                                    <span class="color-dot" style="background:#A1887F"></span>
+                                    <span class="color-dot" style="background:#795548"></span>
+                                </div>
+                                Earthy
+                            </button>
+                            <button class="color-scheme-btn" data-scheme="festive" onclick="selectScheme(this)">
+                                <div class="color-dots">
+                                    <span class="color-dot" style="background:#FF1744"></span>
+                                    <span class="color-dot" style="background:#FFD600"></span>
+                                    <span class="color-dot" style="background:#00E676"></span>
+                                    <span class="color-dot" style="background:#2979FF"></span>
+                                </div>
+                                Festive
+                            </button>
+                            <button class="color-scheme-btn" data-scheme="pastel" onclick="selectScheme(this)">
+                                <div class="color-dots">
+                                    <span class="color-dot" style="background:#FFB5E8"></span>
+                                    <span class="color-dot" style="background:#B5DEFF"></span>
+                                    <span class="color-dot" style="background:#E7FFAC"></span>
+                                    <span class="color-dot" style="background:#C5A3FF"></span>
+                                </div>
+                                Pastel
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Symmetry -->
+                    <div class="control-group">
+                        <span class="control-label">Symmetry Folds</span>
+                        <div class="slider-container">
+                            <span class="slider-value" id="symmetry-val">8</span>
+                            <input type="range" id="symmetry" min="3" max="12" value="8"
+                                oninput="document.getElementById('symmetry-val').textContent = this.value">
+                        </div>
+                    </div>
+
+                    <!-- Layers -->
+                    <div class="control-group">
+                        <span class="control-label">Pattern Layers</span>
+                        <div class="slider-container">
+                            <span class="slider-value" id="layers-val">5</span>
+                            <input type="range" id="layers" min="2" max="8" value="5"
+                                oninput="document.getElementById('layers-val').textContent = this.value">
+                        </div>
+                    </div>
+
+                    <!-- Complexity -->
+                    <div class="control-group">
+                        <span class="control-label">Complexity</span>
+                        <div class="slider-container">
+                            <span class="slider-value" id="complexity-val">50</span>
+                            <input type="range" id="complexity" min="10" max="100" value="50"
+                                oninput="document.getElementById('complexity-val').textContent = this.value">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" style="width:100%; justify-content:center;"
+                        onclick="generatePattern()" id="generate-btn">
+                        ✨ Generate Rangoli
+                    </button>
+                </aside>
+
+                <!-- Canvas Output -->
+                <div class="canvas-area">
+                    <div class="canvas-wrapper" id="canvas-wrapper">
+                        <div class="loading-overlay" id="gen-loading">
+                            <div class="spinner"></div>
+                            <span class="loading-text">Generating your Rangoli…</span>
+                        </div>
+                        <div class="canvas-placeholder" id="canvas-placeholder">
+                            <span class="icon">🌸</span>
+                            <p>Configure your pattern and click <strong>Generate</strong> to create a Rangoli</p>
+                        </div>
+                        <img id="rangoli-canvas" src="" alt="Generated Rangoli Pattern"
+                            style="display:none; max-width:600px; width:100%;">
+                    </div>
+
+                    <!-- Download Actions -->
+                    <div class="download-actions" id="download-actions" style="display:none;">
+                        <button class="btn btn-primary" onclick="downloadImage()">⬇️ Download PNG</button>
+                        <button class="btn btn-secondary" onclick="generatePattern()">🔄 Regenerate</button>
+                    </div>
+
+                    <!-- Graph Stats -->
+                    <div id="graph-stats-section" style="display:none;">
+                        <div class="section-header" style="margin-top:40px; margin-bottom:24px;">
+                            <h2 style="font-size:1.6rem;">🕸️ Graph Analysis</h2>
+                            <p>Mathematical structure of the generated pattern</p>
+                        </div>
+                        <div class="analysis-grid" id="graph-stats-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ ANALYZE SECTION ═══════ -->
+    <section id="analyze-section" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>🔍 Pattern <span class="gradient-text">Analyzer</span></h2>
+                <p>Upload a Rangoli image to extract symmetry, colors, and geometric features.</p>
+            </div>
+
+            <div class="analyzer-layout">
+                <!-- Upload Zone -->
+                <div>
+                    <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()"
+                        ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"
+                        ondrop="handleDrop(event)">
+                        <span class="upload-icon">📤</span>
+                        <h3>Drop your Rangoli image here</h3>
+                        <p>or click to browse — PNG, JPG, JPEG supported</p>
+                        <input type="file" id="file-input" accept="image/*" style="display:none;"
+                            onchange="handleFileSelect(event)">
+                    </div>
+
+                    <!-- Preview -->
+                    <div class="upload-preview" id="upload-preview" style="margin-top:24px;">
+                        <img id="preview-img" src="" alt="Uploaded Rangoli">
+                        <div>
+                            <p style="color: var(--text-secondary); margin-bottom:16px;" id="file-name-display"></p>
+                            <button class="btn btn-primary" onclick="analyzeImage()" id="analyze-btn">
+                                🔍 Analyze Pattern
+                            </button>
+                            <br><br>
+                            <button class="btn btn-secondary" style="margin-top:8px;" onclick="clearUpload()">✕
+                                Clear</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Results -->
+                <div class="analyzer-results" id="analyzer-results">
+                    <div class="loading-overlay" id="analyze-loading"
+                        style="position:relative; min-height:100px; border-radius:12px; display:none;">
+                        <div class="spinner"></div>
+                        <span class="loading-text">Analyzing…</span>
+                    </div>
+
+                    <!-- Symmetry -->
+                    <div class="analysis-card reveal" id="res-symmetry" style="display:none; margin-bottom:20px;">
+                        <div class="analysis-card-header">
+                            <div class="analysis-card-icon orange">♾️</div>
+                            <span class="analysis-card-title">Symmetry Analysis</span>
+                        </div>
+                        <p id="dominant-symmetry"
+                            style="font-size:1.1rem; font-weight:600; color:var(--accent-orange); margin-bottom:16px;">
+                        </p>
+                        <div id="symmetry-bars"></div>
+                    </div>
+
+                    <!-- Color Palette -->
+                    <div class="analysis-card reveal" id="res-palette" style="display:none; margin-bottom:20px;">
+                        <div class="analysis-card-header">
+                            <div class="analysis-card-icon gold">🎨</div>
+                            <span class="analysis-card-title">Color Palette</span>
+                        </div>
+                        <div class="palette-display" id="palette-swatches"></div>
+                    </div>
+
+                    <!-- Pattern Features -->
+                    <div class="analysis-card reveal" id="res-features" style="display:none; margin-bottom:20px;">
+                        <div class="analysis-card-header">
+                            <div class="analysis-card-icon green">📐</div>
+                            <span class="analysis-card-title">Pattern Features</span>
+                        </div>
+                        <div class="analysis-grid" id="features-grid" style="margin-bottom:16px;"></div>
+                        <p style="color:var(--text-secondary); font-size:0.85rem; margin-bottom:8px;">Shape Breakdown
+                        </p>
+                        <div class="shape-grid" id="shape-grid"></div>
+                        <p id="pattern-type-label"
+                            style="margin-top:12px; color:var(--accent-orange); font-weight:600;"></p>
+                    </div>
+
+                    <!-- Edge Map -->
+                    <div class="analysis-card reveal" id="res-edge" style="display:none; margin-bottom:20px;">
+                        <div class="analysis-card-header">
+                            <div class="analysis-card-icon blue">🖼️</div>
+                            <span class="analysis-card-title">Edge Detection Map</span>
+                        </div>
+                        <div class="edge-map-container">
+                            <img id="edge-map-img" src="" alt="Edge detection visualization">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ ABOUT SECTION ═══════ -->
+    <section id="about-section" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>📖 About <span class="gradient-text">Rangoli AI</span></h2>
+                <p>A GenAI-powered prototype exploring computational folk art through data structures and algorithms.
+                </p>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-card reveal">
+                    <div class="info-card-icon">🧮</div>
+                    <h3>Geometric Engine</h3>
+                    <p>
+                        Patterns are generated using matrix-based geometric transformations — rotation matrices,
+                        reflective symmetry operations, and parametric curve equations (Archimedean spirals, rose
+                        curves). The engine produces n-fold radial symmetry with configurable layers.
+                    </p>
+                    <div class="tags">
+                        <span class="tag">NumPy</span>
+                        <span class="tag">Pillow</span>
+                        <span class="tag">Matrix Math</span>
+                    </div>
+                </div>
+
+                <div class="info-card reveal">
+                    <div class="info-card-icon">🕸️</div>
+                    <h3>Graph Theory Model</h3>
+                    <p>
+                        Every Rangoli pattern is represented as a graph — dot grid points become nodes, and Delaunay
+                        triangulation creates edges preserving geometric adjacency. NetworkX is used to compute density,
+                        degree distribution, and estimated symmetry order.
+                    </p>
+                    <div class="tags">
+                        <span class="tag">NetworkX</span>
+                        <span class="tag">Delaunay</span>
+                        <span class="tag">SciPy</span>
+                    </div>
+                </div>
+
+                <div class="info-card reveal">
+                    <div class="info-card-icon">🔬</div>
+                    <h3>Computer Vision</h3>
+                    <p>
+                        The analyzer uses OpenCV for edge detection (Canny), Hough line/circle transforms, and contour
+                        classification. K-Means clustering (sklearn) extracts the dominant color palette from any
+                        uploaded Rangoli image.
+                    </p>
+                    <div class="tags">
+                        <span class="tag">OpenCV</span>
+                        <span class="tag">Canny Edge</span>
+                        <span class="tag">K-Means</span>
+                    </div>
+                </div>
+
+                <div class="info-card reveal">
+                    <div class="info-card-icon">🌺</div>
+                    <h3>Pattern Styles</h3>
+                    <p>
+                        Five drawing algorithms — <strong>Mandala</strong> (concentric petals), <strong>Kolam</strong>
+                        (Bézier curves on a dot grid), <strong>Floral</strong> (lotus motifs),
+                        <strong>Geometric</strong> (star polygons), and <strong>Peacock</strong> (feather-eye motifs
+                        with Archimedean spirals).
+                    </p>
+                    <div class="tags">
+                        <span class="tag">5 Styles</span>
+                        <span class="tag">5 Color Schemes</span>
+                        <span class="tag">Customizable</span>
+                    </div>
+                </div>
+
+                <div class="info-card reveal">
+                    <div class="info-card-icon">⚙️</div>
+                    <h3>Tech Stack</h3>
+                    <p>
+                        Built with Flask for the backend REST API, PIL/Pillow for image rendering, and vanilla
+                        JavaScript on the frontend. All pattern generation is deterministic — driven purely by
+                        algorithmic geometry with no neural networks required.
+                    </p>
+                    <div class="tags">
+                        <span class="tag">Flask</span>
+                        <span class="tag">Python 3</span>
+                        <span class="tag">REST API</span>
+                        <span class="tag">Vanilla JS</span>
+                    </div>
+                </div>
+
+                <div class="info-card reveal">
+                    <div class="info-card-icon">🎓</div>
+                    <h3>Academic Context</h3>
+                    <p>
+                        This project demonstrates how Data Structures &amp; Algorithms (graph representations, matrix
+                        operations, spatial data structures) and Machine Learning concepts (clustering, feature
+                        extraction) can be applied to preserve and recreate traditional art forms.
+                    </p>
+                    <div class="tags">
+                        <span class="tag">DSA</span>
+                        <span class="tag">ML</span>
+                        <span class="tag">Folk Art</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Reference -->
+            <div class="section-header" style="margin-top:80px;">
+                <h2 style="font-size:1.8rem;">🔌 API Reference</h2>
+                <p>Three REST endpoints power the application</p>
+            </div>
+            <div class="info-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+                <div class="info-card reveal" style="font-family: monospace;">
+                    <div class="analysis-card-header">
+                        <div class="analysis-card-icon green">POST</div>
+                        <span class="analysis-card-title">/api/generate</span>
+                    </div>
+                    <p style="font-size:0.85rem;">Accepts <code>style</code>, <code>symmetry</code>,
+                        <code>layers</code>, <code>colorScheme</code>, <code>complexity</code>. Returns base64 PNG +
+                        graph statistics.
+                    </p>
+                </div>
+                <div class="info-card reveal" style="font-family: monospace;">
+                    <div class="analysis-card-header">
+                        <div class="analysis-card-icon orange">POST</div>
+                        <span class="analysis-card-title">/api/analyze</span>
+                    </div>
+                    <p style="font-size:0.85rem;">Accepts multipart image upload. Returns symmetry scores, color
+                        palette, shape features, and edge map.</p>
+                </div>
+                <div class="info-card reveal" style="font-family: monospace;">
+                    <div class="analysis-card-header">
+                        <div class="analysis-card-icon blue">GET</div>
+                        <span class="analysis-card-title">/api/styles</span>
+                    </div>
+                    <p style="font-size:0.85rem;">Returns all available styles, color schemes, symmetry options, and
+                        configuration metadata.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ─── State ───
+        let currentStyle = 'mandala';
+        let currentScheme = 'traditional';
+        let currentImageData = null;
+        let selectedFile = null;
+
+        // ─── Navigation ───
+        function showSection(name) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(s => {
+                s.classList.remove('active');
+                s.style.display = 'none';
+            });
+
+            // Mark nav link active
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+            if (name === 'hero') {
+                const s = document.getElementById('hero-section');
+                s.style.display = 'flex';
+                s.style.flexDirection = 'column';
+                s.classList.add('active');
+            } else {
+                const s = document.getElementById(name + '-section');
+                s.style.display = 'block';
+                s.classList.add('active');
+                const navBtn = document.getElementById('nav-' + name);
+                if (navBtn) navBtn.classList.add('active');
+            }
+
+            triggerReveal();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ─── Controls ───
+        function selectStyle(el) {
+            document.querySelectorAll('.style-option').forEach(o => o.classList.remove('active'));
+            el.classList.add('active');
+            currentStyle = el.dataset.style;
+        }
+
+        function selectScheme(el) {
+            document.querySelectorAll('.color-scheme-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            currentScheme = el.dataset.scheme;
+        }
+
+        // ─── Generate ───
+        async function generatePattern() {
+            const btn = document.getElementById('generate-btn');
+            const loading = document.getElementById('gen-loading');
+            const placeholder = document.getElementById('canvas-placeholder');
+            const canvas = document.getElementById('rangoli-canvas');
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Generating…';
+            loading.classList.add('active');
+            placeholder.style.display = 'none';
+            canvas.style.display = 'none';
+            document.getElementById('download-actions').style.display = 'none';
+            document.getElementById('graph-stats-section').style.display = 'none';
+
+            const params = {
+                style: currentStyle,
+                symmetry: parseInt(document.getElementById('symmetry').value),
+                layers: parseInt(document.getElementById('layers').value),
+                colorScheme: currentScheme,
+                complexity: parseInt(document.getElementById('complexity').value)
+            };
+
+            try {
+                const resp = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(params)
+                });
+                const data = await resp.json();
+
+                if (data.success) {
+                    canvas.src = 'data:image/png;base64,' + data.image;
+                    canvas.style.display = 'block';
+                    currentImageData = data.image;
+                    document.getElementById('download-actions').style.display = 'flex';
+                    renderGraphStats(data.graph_analysis);
+                    showToast('✨ Rangoli generated successfully!');
+                } else {
+                    showToast('⚠️ Error: ' + data.error);
+                    placeholder.style.display = 'block';
+                }
+            } catch (err) {
+                showToast('⚠️ Connection error. Is the server running?');
+                placeholder.style.display = 'block';
+                console.error(err);
+            } finally {
+                loading.classList.remove('active');
+                btn.disabled = false;
+                btn.innerHTML = '✨ Generate Rangoli';
+            }
+        }
+
+        function renderGraphStats(stats) {
+            const grid = document.getElementById('graph-stats-grid');
+            const entries = [
+                { icon: '🔵', color: 'orange', label: 'Nodes', value: stats.nodes, sub: 'Pattern points' },
+                { icon: '🔗', color: 'blue', label: 'Edges', value: stats.edges, sub: 'Connections' },
+                { icon: '📊', color: 'gold', label: 'Density', value: stats.density, sub: 'Graph density' },
+                { icon: '📐', color: 'green', label: 'Avg Degree', value: stats.avg_degree, sub: 'Per node' },
+                { icon: '🧩', color: 'purple', label: 'Components', value: stats.connected_components, sub: 'Graph components' },
+                { icon: '♾️', color: 'red', label: 'Symmetry', value: stats.symmetry_order + '-fold', sub: 'Detected order' }
+            ];
+
+            grid.innerHTML = entries.map(e => `
+        <div class="analysis-card">
+            <div class="analysis-card-header">
+                <div class="analysis-card-icon ${e.color}">${e.icon}</div>
+                <span class="analysis-card-title">${e.label}</span>
+            </div>
+            <div class="stat-value">${e.value}</div>
+            <div class="stat-label">${e.sub}</div>
+        </div>
+    `).join('');
+
+            document.getElementById('graph-stats-section').style.display = 'block';
+        }
+
+        function downloadImage() {
+            if (!currentImageData) return;
+            const a = document.createElement('a');
+            a.href = 'data:image/png;base64,' + currentImageData;
+            a.download = 'rangoli_' + currentStyle + '_' + Date.now() + '.png';
+            a.click();
+            showToast('⬇️ Download started!');
+        }
+
+        // ─── Upload & Analyze ───
+        function handleDragOver(e) {
+            e.preventDefault();
+            document.getElementById('upload-zone').classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            document.getElementById('upload-zone').classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            document.getElementById('upload-zone').classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                loadFile(file);
+            } else {
+                showToast('⚠️ Please drop an image file.');
+            }
+        }
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) loadFile(file);
+        }
+
+        function loadFile(file) {
+            selectedFile = file;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('preview-img').src = e.target.result;
+                document.getElementById('file-name-display').textContent = '📄 ' + file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+                const preview = document.getElementById('upload-preview');
+                preview.classList.add('active');
+                document.getElementById('upload-zone').style.display = 'none';
+                // Hide previous results
+                hideAnalysisResults();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearUpload() {
+            selectedFile = null;
+            document.getElementById('preview-img').src = '';
+            document.getElementById('upload-preview').classList.remove('active');
+            document.getElementById('upload-zone').style.display = 'block';
+            document.getElementById('file-input').value = '';
+            hideAnalysisResults();
+        }
+
+        function hideAnalysisResults() {
+            ['res-symmetry', 'res-palette', 'res-features', 'res-edge'].forEach(id => {
+                document.getElementById(id).style.display = 'none';
+            });
+            document.getElementById('analyze-loading').style.display = 'none';
+        }
+
+        async function analyzeImage() {
+            if (!selectedFile) { showToast('⚠️ Please select an image first.'); return; }
+
+            const btn = document.getElementById('analyze-btn');
+            const loadingEl = document.getElementById('analyze-loading');
+            btn.disabled = true;
+            btn.textContent = '⏳ Analyzing…';
+            loadingEl.style.display = 'flex';
+            hideAnalysisResults();
+
+            const formData = new FormData();
+            formData.append('image', selectedFile);
+
+            try {
+                const resp = await fetch('/api/analyze', { method: 'POST', body: formData });
+                const data = await resp.json();
+
+                if (data.success) {
+                    renderSymmetry(data.symmetry_analysis);
+                    renderPalette(data.color_palette);
+                    renderFeatures(data.pattern_features);
+                    renderEdgeMap(data.edge_map);
+                    document.getElementById('analyzer-results').classList.add('active');
+                    showToast('✅ Analysis complete!');
+                } else {
+                    showToast('⚠️ Error: ' + data.error);
+                }
+            } catch (err) {
+                showToast('⚠️ Connection error. Is the server running?');
+                console.error(err);
+            } finally {
+                loadingEl.style.display = 'none';
+                btn.disabled = false;
+                btn.textContent = '🔍 Analyze Pattern';
+            }
+        }
+
+        function renderSymmetry(sym) {
+            const el = document.getElementById('res-symmetry');
+            el.style.display = 'block';
+
+            document.getElementById('dominant-symmetry').textContent =
+                '🏆 Dominant: ' + sym.dominant_symmetry.replace('-', ' ').toUpperCase();
+
+            const barsEl = document.getElementById('symmetry-bars');
+            const foldKeys = Object.keys(sym).filter(k => k.includes('fold') || k.includes('reflection'));
+            barsEl.innerHTML = foldKeys.map(k => `
+        <div class="symmetry-bar">
+            <span class="symmetry-label">${k.replace('_', ' ')}</span>
+            <div class="bar-track"><div class="bar-fill" style="width:${sym[k]}%"></div></div>
+            <span class="bar-value">${sym[k]}%</span>
+        </div>
+    `).join('');
+        }
+
+        function renderPalette(palette) {
+            const el = document.getElementById('res-palette');
+            el.style.display = 'block';
+            document.getElementById('palette-swatches').innerHTML = palette.map(c => `
+        <div class="palette-swatch" style="background:${c.rgb}" data-hex="${c.hex}" title="${c.hex} — ${c.percentage}%"></div>
+    `).join('');
+        }
+
+        function renderFeatures(features) {
+            const el = document.getElementById('res-features');
+            el.style.display = 'block';
+
+            const grid = document.getElementById('features-grid');
+            grid.innerHTML = `
+        <div class="analysis-card" style="padding:16px;">
+            <div class="stat-value" style="font-size:1.4rem;">${features.lines_detected}</div>
+            <div class="stat-label">Lines Detected</div>
+        </div>
+        <div class="analysis-card" style="padding:16px;">
+            <div class="stat-value" style="font-size:1.4rem;">${features.circles_detected}</div>
+            <div class="stat-label">Circles Found</div>
+        </div>
+        <div class="analysis-card" style="padding:16px;">
+            <div class="stat-value" style="font-size:1.4rem;">${features.complexity_score}</div>
+            <div class="stat-label">Complexity Score</div>
+        </div>
+        <div class="analysis-card" style="padding:16px;">
+            <div class="stat-value" style="font-size:1.4rem;">${features.edge_density}%</div>
+            <div class="stat-label">Edge Density</div>
+        </div>
+    `;
+
+            const shapeGrid = document.getElementById('shape-grid');
+            const shapes = features.shape_analysis;
+            shapeGrid.innerHTML = Object.entries(shapes).map(([name, count]) => `
+        <div class="shape-item">
+            <div class="shape-count">${count}</div>
+            <div class="shape-name">${name}</div>
+        </div>
+    `).join('');
+
+            const patternEl = document.getElementById('pattern-type-label');
+            patternEl.textContent = '🏷️ Pattern Type: ' + features.pattern_type;
+        }
+
+        function renderEdgeMap(edgeB64) {
+            const el = document.getElementById('res-edge');
+            el.style.display = 'block';
+            document.getElementById('edge-map-img').src = 'data:image/png;base64,' + edgeB64;
+        }
+
+        // ─── Toast ───
+        function showToast(msg, duration = 3000) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), duration);
+        }
+
+        // ─── Reveal on scroll ───
+        function triggerReveal() {
+            requestAnimationFrame(() => {
+                document.querySelectorAll('.reveal').forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight - 60) {
+                        el.classList.add('visible');
+                    }
+                });
+            });
+        }
+
+        // ─── Mobile Menu ───
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const btn = document.getElementById('hamburger');
+            menu.classList.toggle('open');
+            btn.classList.toggle('open');
+        }
+
+        // ─── Nav scroll effect ───
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 20) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+            triggerReveal();
+        });
+
+        // ─── Init ───
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('hero');
+            setTimeout(triggerReveal, 300);
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-logo">
+                <span style="font-size:1.8rem;">🌸</span>
+                <span class="nav-logo-text">Rangoli AI</span>
+            </div>
+            <p class="footer-desc">An AI-powered platform for generating and analyzing traditional Indian Rangoli
+                patterns using geometric algorithms, graph theory, and computer vision.</p>
+            <div class="footer-links">
+                <button class="footer-link" onclick="showSection('generate')">Generate</button>
+                <button class="footer-link" onclick="showSection('analyze')">Analyze</button>
+                <button class="footer-link" onclick="showSection('about')">About</button>
+            </div>
+            <p class="footer-copy">&copy; 2025 Rangoli Pattern AI &mdash; Built with Flask, OpenCV, NetworkX &amp;
+                Pillow</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
